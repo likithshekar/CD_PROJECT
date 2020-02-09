@@ -3,6 +3,7 @@
 //This is a simple single line comment
 
 int main(){
+    int i;
     int a = 0;
     if(a>=0){
         /* This is 
@@ -10,10 +11,11 @@ int main(){
         */
         printf("If statement works");
     }
-    for(int i=0;i<3;i++){
+    for(i=0;i<3;i++){
         printf("%d. For Loop works\n",i);
     }
-    while(a=0&&i=3){
+    while(a==0 && i==3){
         printf("While statement works");
+        a++;
     }
 }
