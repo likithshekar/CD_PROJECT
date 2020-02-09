@@ -40,7 +40,7 @@ scopedTypeSpecifier: static typeSpecifier
     | typeSpecifier;
 typeSpecifier: INT
     | CHAR
-    | FLOAT;
+    | FLOAT;                          /*Try adding bool*/
 funDeclaration: typeSpecifier ID OP params CP statement
     | ID OP params CP statement;
 params: paramList | ;
