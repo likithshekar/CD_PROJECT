@@ -30,14 +30,14 @@ declarationList: declarationList declaration
 declaration: varDeclaration
     | funDeclaration;
 varDeclaration: typeSpecifier varDeclList delimiter;
-scopedVarDeclaration: scopedTypeSpecifier varDeclList delimiter;
+scopedVarDeclaration: typeSpecifier varDeclList delimiter;
 varDeclList: varDeclList varDeclInitialize | varDeclInitialize;
 varDeclInitialize: varDeclId
     | varDeclId':' simpleExpression;
 varDeclId: ID
     | ID OS numconst CS;
-scopedTypeSpecifier: static typeSpecifier
-    | typeSpecifier;
+/*scopedTypeSpecifier: static typeSpecifier
+    | typeSpecifier;*/
 typeSpecifier: INT
     | CHAR
     | FLOAT;                          /*Try adding bool*/
