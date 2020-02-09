@@ -4,11 +4,18 @@
 	#include<string.h>
 %}
 
+%right '='
+%left '<' '>'
+%left '+' '-'
+%left '*' '/'
+%right '!'
+
+%token charconst stringconst
 %token SUB ADD MUL DIV MOD SADD SSUB SMUL SDIV SMOD INC DEC
 %token GT LT NE GE LE EQ ASSIGN
 %token AND OR NOT
 %token IF ELSE ELSEIF FOR WHILE
-%token BREAK
+%token BREAK RETURN
 %token INT CHAR FLOAT STATIC
 %token ID numconst
 %token delimiter COMMA
@@ -26,7 +33,7 @@ varDeclaration: typeSpecifier varDeclList delimiter;
 scopedVarDeclaration: scopedTypeSpecifier varDeclList delimiter;
 varDeclList: varDeclList varDeclInitialize | varDeclInitialize;
 varDeclInitialize: varDeclId
-    | varDeclId: simpleExpression;
+    | varDeclId':' simpleExpression;
 varDeclId: ID
     | ID OS numconst CS;
 scopedTypeSpecifier: static typeSpecifier
@@ -40,8 +47,8 @@ params: paramList | ;
 paramList: paramList delimiter paramTypeList
     | paramTypeList;
 paramTypeList: typeSpecifier paramIdList;
-paramIdList: paramIdList, paramId
-    | paramId;
+paramIdList: paramIdList, paramId      
+    | paramId;                        /*<--Check ','*/
 paramId: ID
     | ID OS CS;
 statement: expressionStmt
@@ -49,26 +56,26 @@ statement: expressionStmt
     | selectionStmt
     | iterationStmt
     | returnStmt
-    | breakStmtexpressionStmt: expression delimiter
+    | breakStmt;
+expressionStmt: expression delimiter
     | delimiter;
 compoundStmt: OB localDeclarations statementList CB;
 localDeclarations: localDeclarations scopedVarDeclaration | ;
 statementList: statementList statement | ;
-elsifList: elsifList ELSEIF simpleExpression then statement | ;
+elsifList: elsifList ELSEIF simpleExpression statement | ;
 selectionStmt: IF simpleExpression then statement elsifList
-    | IF simpleExpression then statement elsifList ELSE statement
-iterationRange: ID = simpleExpression…simpleExpression
-    | ID = simpleExpression…simpleExpression: simpleExpression;
-iterationStmt: WHILE OP simpleExpression CP do statement
-    | FOR OP varDeclInitialize delimiter simpleExpression delimiter expression CP do statement
-    | FOR OP delimiter simpleExpression delimiter expression CP do statement
-    | FOR OP varDeclInitialize delimiter simpleExpression delimiter  CP do statement
-    | FOR OP delimiter  simpleExpression delimiter CP do statement
-    | FOR OP delimiter  delimiter CP do statement;
-returnStmt: return delimiter
-    | return expression delimiter;
+    | IF simpleExpression then statement elsifList ELSE statement;
+iterationRange: ID ASSIGN simpleExpression…simpleExpression
+    | ID ASSIGN simpleExpression…simpleExpression':' simpleExpression;    /*Check 'iterationRange' CFG*/
+iterationStmt: WHILE OP simpleExpression CP statement
+    | FOR OP varDeclInitialize delimiter simpleExpression delimiter expression CP statement
+    | FOR OP delimiter simpleExpression delimiter expression CP statement
+    | FOR OP varDeclInitialize delimiter simpleExpression delimiter  CP statement
+    | FOR OP delimiter  simpleExpression delimiter CP statement
+    | FOR OP delimiter delimiter CP statement;
+returnStmt: RETURN delimiter
+    | RETURN expression delimiter;
 breakStmt: BREAK delimiter;
-
 expression: mutable ASSIGN expression
     | mutable SADD expression
     | mutable SSUB expression
@@ -104,11 +111,12 @@ mulop: MUL
 unaryExpression: unaryop unaryExpression
     | factor;
 unaryop: SUB
-    | MUL;
+    | MUL
+    | ?;                                  /*Check '?'*/
 factor: immutable
     | mutable;
 mutable: ID
-    | mutable [expression];
+    | mutable OS expression CS;
 immutable: OP expression CP
     | call
     | constant;
@@ -119,6 +127,6 @@ argList: argList, expression
 constant: numconst
     | charconst
     | stringconst
-    | true
-    | false;
+    | 'true' | 'True'
+    | 'false' | 'False';
 %%

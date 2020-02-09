@@ -3,20 +3,17 @@
 	#include<stdlib.h>
 	#include<malloc.h>
 	#include<string.h>
-	void insert(char*,char);
-	int countentry=0;
-	int comment=0;
-	int bracketcount=0;
+	#include "y.tab.h"
 %}
 
-charconst: Any single character placed inside single quotes.;
-stringconst: Zero or more characters placed inside double quotes.;
 
 letter [a-zA-Z]
 digit [0-9]
 letdig letter|digit
 
 %%
+\'[a-zA-Z0-9]\' return charconst
+\"[a-zA-Z0-9]*\" return stringconst
 "-" return SUB;
 "+" return ADD;
 "*" return MUL;
@@ -45,6 +42,7 @@ letdig letter|digit
 "while" return WHILE;
 "for" return FOR;
 "break" return BREAK;
+"return" return RETURN;
 "int" return INT;
 "char" return CHAR;
 "float" return FLOAT;
