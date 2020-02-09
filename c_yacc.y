@@ -112,7 +112,7 @@ unaryExpression: unaryop unaryExpression
     | factor;
 unaryop: SUB
     | MUL
-    | ?;                                  /*Check '?'*/
+    | '?';                                  /*Check '?'*/
 factor: immutable
     | mutable;
 mutable: ID
@@ -123,7 +123,7 @@ immutable: OP expression CP
 call: ID OP args CP;
 args: argList | ;
 argList: argList, expression
-    | expression;
+    | expression;                         /*Check ','*/
 constant: numconst
     | charconst
     | stringconst
