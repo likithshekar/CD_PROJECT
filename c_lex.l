@@ -12,8 +12,8 @@ digit [0-9]
 letdig letter|digit
 
 %%
-\'[a-zA-Z0-9]\' return charconst
-\"[a-zA-Z0-9]*\" return stringconst
+\'[ a-zA-Z0-9]\' return charconst
+\"[ a-zA-Z0-9]*\" return stringconst
 "-" return SUB;
 "+" return ADD;
 "*" return MUL;
