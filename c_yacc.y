@@ -50,7 +50,6 @@ selectionStmt: if simpleExpression then statement elsifList
     | if simpleExpression then statement elsifList else statement
 iterationRange: ID = simpleExpression…simpleExpression
     | ID = simpleExpression…simpleExpression: simpleExpression;
-delimiter: \;
 iterationStmt: while ( simpleExpression ) do statement
     | for ( varDeclInitialize delimiter simpleExpression delimiter expression ) do statement
     | for ( delimiter simpleExpression delimiter expression ) do statement
