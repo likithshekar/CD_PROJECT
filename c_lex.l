@@ -1,15 +1,12 @@
 %{
 	#include<stdio.h>
 	#include<stdlib.h>
-	#include<malloc.h>
 	#include<string.h>
 	#include "y.tab.h"
 %}
 
-
 letter [a-zA-Z]
 digit [0-9]
-letdig letter|digit
 
 %%
 \'[ a-zA-Z0-9]\' return charconst
