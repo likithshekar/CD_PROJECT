@@ -1798,6 +1798,11 @@ yyreturn:
 
 
 #include "lex.yy.c"
+
+int yywrap(){
+    return 1;
+}
+
 int main()
 {
 	yyin=fopen("input.c","r");

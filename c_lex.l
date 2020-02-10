@@ -9,14 +9,14 @@ letter [a-zA-Z]
 digit [0-9]
 
 %%
-\'.\' return charconst
-\".*\" return stringconst
+\'.\' return charconst;
+\".*\" return stringconst;
 \- return SUB;
 \+ return ADD;
 \* return MUL;
 \/ return DIV;
-\% return MOD
-\%\= return SMOD
+\% return MOD;
+\%\= return SMOD;
 \+\= return SADD;
 \-\= return SSUB;
 \*\= return SMUL;
@@ -32,7 +32,7 @@ digit [0-9]
 \= return ASSIGN;
 \&\& return AND;
 \|\| return OR;
-\! return NOT
+\! return NOT;
 "if" return IF;
 "else" return ELSE;
 "elseif" return ELSEIF;

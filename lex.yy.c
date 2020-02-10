@@ -667,12 +667,12 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 12 "c_lex.l"
-return charconst
+return charconst;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 13 "c_lex.l"
-return stringconst
+return stringconst;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
@@ -697,12 +697,12 @@ return DIV;
 case 7:
 YY_RULE_SETUP
 #line 18 "c_lex.l"
-return MOD
+return MOD;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 19 "c_lex.l"
-return SMOD
+return SMOD;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
@@ -782,7 +782,7 @@ return OR;
 case 24:
 YY_RULE_SETUP
 #line 35 "c_lex.l"
-return NOT
+return NOT;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
