@@ -1717,6 +1717,10 @@ int yywrap(){
     return 1;
 }
 
+void yyerror(const char *str){
+    printf("error");
+}
+
 void insert(int type1){
     fl=0;
     for(j=0;j<i;j++){
@@ -1740,5 +1744,13 @@ int main(){
     yyin=fopen("input.c","r");
     yyout=fopen("output.txt","w");
     yyparse();
-    return 0;
+    if(err_no==0){
+        char symbol_table[100];
+        for(j=0;j<i;j++){
+            char val[2];
+            val[0]=symbol[j];
+            val[1]=type[j];
+            symbol_table[j]=val;
+        }
+    }
 }

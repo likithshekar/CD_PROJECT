@@ -39,16 +39,20 @@ scopedVarDeclaration: INT varDeclList_I delimiter
     | FLOAT varDeclList_F delimiter
     | BOOL varDeclList_B delimiter
     ;
-varDeclList_I: varDeclList_I COMMA varDeclInitialize {strcpy(temp,(char *)$3); insert(0);}
+varDeclList_I: varDeclList_I COMMA varDeclInitialize
+    {strcpy(temp,(char *)$3); insert(0);}
     | varDeclInitialize
     ;
-varDeclList_C: varDeclList_C COMMA varDeclInitialize {strcpy(temp,(char *)$3); insert(1);}
+varDeclList_C: varDeclList_C COMMA varDeclInitialize
+    {strcpy(temp,(char *)$3); insert(1);}
     | varDeclInitialize
     ;
-varDeclList_F: varDeclList_F COMMA varDeclInitialize {strcpy(temp,(char *)$3); insert(2);}
+varDeclList_F: varDeclList_F COMMA varDeclInitialize
+    {strcpy(temp,(char *)$3); insert(2);}
     | varDeclInitialize
     ;
-varDeclList_B: varDeclList_B COMMA varDeclInitialize {strcpy(temp,(char *)$3); insert(3);}
+varDeclList_B: varDeclList_B COMMA varDeclInitialize
+    {strcpy(temp,(char *)$3); insert(3);}
     | varDeclInitialize
     ;
 varDeclInitialize: ID
@@ -167,6 +171,10 @@ int yywrap(){
     return 1;
 }
 
+void yyerror(const char *str){
+    printf("error");
+}
+
 void insert(int type1){
     fl=0;
     for(j=0;j<i;j++){
@@ -190,5 +198,13 @@ int main(){
     yyin=fopen("input.c","r");
     yyout=fopen("output.txt","w");
     yyparse();
-    return 0;
+    if(err_no==0){
+        char symbol_table[100];
+        for(j=0;j<i;j++){
+            char val[2];
+            val[0]=symbol[j];
+            val[1]=type[j];
+            symbol_table[j]=val;
+        }
+    }
 }
