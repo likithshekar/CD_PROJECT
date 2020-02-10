@@ -9,30 +9,30 @@ letter [a-zA-Z]
 digit [0-9]
 
 %%
-\'[ a-zA-Z0-9]\' return charconst
-\"[ a-zA-Z0-9]*\" return stringconst
-"-" return SUB;
-"+" return ADD;
-"*" return MUL;
-"/" return DIV;
-"%" return MOD
-"%=" return SMOD
-"+=" return SADD;
-"-=" return SSUB;
-"*=" return SMUL;
-"/=" return SDIV;
-"++" return INC;
-"--" return DEC;
-">" return GT;
-"<" return LT;
-"!=" return NE;
-">=" return GE;
-"<=" return LE;
-"==" return EQ;
-"=" return ASSIGN;
-"&&" return AND;
-"||" return OR;
-"!" return NOT
+\'.\' return charconst
+\".*\" return stringconst
+\- return SUB;
+\+ return ADD;
+\* return MUL;
+\/ return DIV;
+\% return MOD
+\%\= return SMOD
+\+\= return SADD;
+\-\= return SSUB;
+\*\= return SMUL;
+\/\= return SDIV;
+\+\+ return INC;
+\-\- return DEC;
+\> return GT;
+\< return LT;
+\!\= return NE;
+\>\= return GE;
+\<\= return LE;
+\=\= return EQ;
+\= return ASSIGN;
+\&\& return AND;
+\|\| return OR;
+\! return NOT
 "if" return IF;
 "else" return ELSE;
 "elseif" return ELSEIF;
@@ -43,10 +43,11 @@ digit [0-9]
 "int" return INT;
 "char" return CHAR;
 "float" return FLOAT;
-"static" return STATIC
+"_bool" return BOOL;
 {letter}({letter}|{digit})* return ID;
 {digit}+  return numconst;
 ";" return delimiter;
+":" return SEMI;
 "," return COMMA;
 "(" return OP;
 ")" return CP;
