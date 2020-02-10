@@ -59,6 +59,6 @@ digit [0-9]
 \] return CS;
 [ \n] return NL;
 \/\/(.*) ;
-{m_start}.*{m_end} ;
+{m_start}(.*\n)*.*{m_end} ;
 . ;
 %%
