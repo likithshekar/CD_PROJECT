@@ -3,7 +3,6 @@
 	#include<stdlib.h>
 	#include<string.h>
 	#include "c_yacc.tab.h"
-	int x=0;
 %}
 
 letter [a-zA-Z]
@@ -41,13 +40,13 @@ digit [0-9]
 "for" return FOR;
 "break" return BREAK;
 "return" return RETURN;
-"int" return INT;x++;
-"char" return CHAR;x++;
-"float" return FLOAT;x++;
-"_bool" return BOOL;x++;
+"int" return INT;
+"char" return CHAR;
+"float" return FLOAT;
+"_bool" return BOOL;
 {letter}({letter}|{digit})* return ID;
 {digit}+  return numconst;
-\; return delimiter;x--;
+\; return delimiter;
 \: return SEMI;
 \, return COMMA;
 \( return OP;
