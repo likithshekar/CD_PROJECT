@@ -155,9 +155,7 @@ void insert(int type1){
 
 int main(){
 	yyin=fopen("input.c","r");
-	yyparse();
     yyout=fopen("output.txt","w");
-	fclose(yyin);
-    fclose(yyout);
+	yyparse();
 	return 0;
 }

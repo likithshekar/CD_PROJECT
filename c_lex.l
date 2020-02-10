@@ -5,6 +5,8 @@
 	#include "c_yacc.tab.h"
 %}
 
+m_start \/\*
+m_end \*\/
 letter [a-zA-Z]
 digit [0-9]
 
@@ -56,5 +58,7 @@ digit [0-9]
 \[ return OS;
 \] return CS;
 [ \n] return NL;
+\/\/(.*) ;
+{m_start}.*{m_end} ;
 . ;
 %%
