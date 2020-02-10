@@ -427,7 +427,7 @@ char *yytext;
 	#include<stdio.h>
 	#include<stdlib.h>
 	#include<string.h>
-	#include "y.tab.h"
+	#include "c_yacc.tab.h"
 #line 432 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
