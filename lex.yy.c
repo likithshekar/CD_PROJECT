@@ -286,10 +286,10 @@ static void yy_fatal_error YY_PROTO(( yyconst char msg[] ));
 #define YY_END_OF_BUFFER 50
 static yyconst short int yy_accept[93] =
     {   0,
-        0,    0,   50,   47,   48,   47,   24,   47,    7,   47,
-       47,   41,   42,    5,    4,   40,    3,    6,   37,   39,
-       38,   16,   21,   15,   36,   45,   46,   47,   36,   36,
-       36,   36,   36,   36,   36,   43,   47,   44,   17,    0,
+        0,    0,   50,   48,   47,   47,   24,   48,    7,   48,
+       48,   41,   42,    5,    4,   40,    3,    6,   37,   39,
+       38,   16,   21,   15,   36,   45,   46,   48,   36,   36,
+       36,   36,   36,   36,   36,   43,   48,   44,   17,    0,
         2,    8,   22,    0,   11,   13,    9,   14,   10,   12,
        37,   19,   20,   18,   36,    0,   36,   36,   36,   36,
        36,   25,   36,   36,   36,   23,    1,    0,   36,   36,
@@ -428,7 +428,8 @@ char *yytext;
 	#include<stdlib.h>
 	#include<string.h>
 	#include "c_yacc.tab.h"
-#line 432 "lex.yy.c"
+	int x=0;
+#line 433 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -579,9 +580,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 11 "c_lex.l"
+#line 12 "c_lex.l"
 
-#line 585 "lex.yy.c"
+#line 586 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -666,250 +667,250 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 12 "c_lex.l"
+#line 13 "c_lex.l"
 return charconst;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 13 "c_lex.l"
+#line 14 "c_lex.l"
 return stringconst;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 14 "c_lex.l"
+#line 15 "c_lex.l"
 return SUB;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 15 "c_lex.l"
+#line 16 "c_lex.l"
 return ADD;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 16 "c_lex.l"
+#line 17 "c_lex.l"
 return MUL;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 17 "c_lex.l"
+#line 18 "c_lex.l"
 return DIV;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 18 "c_lex.l"
+#line 19 "c_lex.l"
 return MOD;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 19 "c_lex.l"
+#line 20 "c_lex.l"
 return SMOD;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 20 "c_lex.l"
+#line 21 "c_lex.l"
 return SADD;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 21 "c_lex.l"
+#line 22 "c_lex.l"
 return SSUB;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 22 "c_lex.l"
+#line 23 "c_lex.l"
 return SMUL;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 23 "c_lex.l"
+#line 24 "c_lex.l"
 return SDIV;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 24 "c_lex.l"
+#line 25 "c_lex.l"
 return INC;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 25 "c_lex.l"
+#line 26 "c_lex.l"
 return DEC;
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 26 "c_lex.l"
+#line 27 "c_lex.l"
 return GT;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 27 "c_lex.l"
+#line 28 "c_lex.l"
 return LT;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 28 "c_lex.l"
+#line 29 "c_lex.l"
 return NE;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 29 "c_lex.l"
+#line 30 "c_lex.l"
 return GE;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 30 "c_lex.l"
+#line 31 "c_lex.l"
 return LE;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 31 "c_lex.l"
+#line 32 "c_lex.l"
 return EQ;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 32 "c_lex.l"
+#line 33 "c_lex.l"
 return ASSIGN;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 33 "c_lex.l"
+#line 34 "c_lex.l"
 return AND;
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 34 "c_lex.l"
+#line 35 "c_lex.l"
 return OR;
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 35 "c_lex.l"
+#line 36 "c_lex.l"
 return NOT;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 36 "c_lex.l"
+#line 37 "c_lex.l"
 return IF;
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 37 "c_lex.l"
+#line 38 "c_lex.l"
 return ELSE;
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 38 "c_lex.l"
+#line 39 "c_lex.l"
 return ELSEIF;
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 39 "c_lex.l"
+#line 40 "c_lex.l"
 return WHILE;
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 40 "c_lex.l"
+#line 41 "c_lex.l"
 return FOR;
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 41 "c_lex.l"
+#line 42 "c_lex.l"
 return BREAK;
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 42 "c_lex.l"
+#line 43 "c_lex.l"
 return RETURN;
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 43 "c_lex.l"
-return INT;
+#line 44 "c_lex.l"
+return INT;x++;
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 44 "c_lex.l"
-return CHAR;
+#line 45 "c_lex.l"
+return CHAR;x++;
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 45 "c_lex.l"
-return FLOAT;
+#line 46 "c_lex.l"
+return FLOAT;x++;
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 46 "c_lex.l"
-return BOOL;
+#line 47 "c_lex.l"
+return BOOL;x++;
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 47 "c_lex.l"
+#line 48 "c_lex.l"
 return ID;
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 48 "c_lex.l"
+#line 49 "c_lex.l"
 return numconst;
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 49 "c_lex.l"
-return delimiter;
+#line 50 "c_lex.l"
+return delimiter;x--;
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 50 "c_lex.l"
+#line 51 "c_lex.l"
 return SEMI;
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 51 "c_lex.l"
+#line 52 "c_lex.l"
 return COMMA;
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 52 "c_lex.l"
+#line 53 "c_lex.l"
 return OP;
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 53 "c_lex.l"
+#line 54 "c_lex.l"
 return CP;
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 54 "c_lex.l"
+#line 55 "c_lex.l"
 return OB;
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 55 "c_lex.l"
+#line 56 "c_lex.l"
 return CB;
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 56 "c_lex.l"
+#line 57 "c_lex.l"
 return OS;
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 57 "c_lex.l"
+#line 58 "c_lex.l"
 return CS;
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 58 "c_lex.l"
-;
+#line 59 "c_lex.l"
+return NL;
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 59 "c_lex.l"
+#line 60 "c_lex.l"
 ;
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 60 "c_lex.l"
+#line 61 "c_lex.l"
 ECHO;
 	YY_BREAK
-#line 913 "lex.yy.c"
+#line 914 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1795,4 +1796,4 @@ int main()
 	return 0;
 	}
 #endif
-#line 60 "c_lex.l"
+#line 61 "c_lex.l"

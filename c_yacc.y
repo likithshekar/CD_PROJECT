@@ -1,7 +1,9 @@
 %{
-    #include<stdio.h>
-	#include<stdlib.h>
-	#include<string.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+int err_no=0,fl=0,i=0,j=0,type[100];
+char symbol[100][100],temp[100];
 %}
 
 %right '='
@@ -18,40 +20,33 @@
 %token BREAK RETURN
 %token INT CHAR FLOAT BOOL
 %token ID numconst
-%token delimiter SEMI COMMA
+%token delimiter SEMI COMMA NL
 %token OP CP OB CB OS CS
 
 %start program
 
 %%
 program: declarationList;
-declarationList: declarationList declaration
-    | declaration;
-declaration: varDeclaration
-    | funDeclaration;
-varDeclaration: typeSpecifier varDeclList delimiter;
-scopedVarDeclaration: typeSpecifier varDeclList delimiter;
-varDeclList: varDeclList varDeclInitialize | varDeclInitialize;
-varDeclInitialize: varDeclId
-    | varDeclId SEMI simpleExpression;
-varDeclId: ID
-    | ID OS numconst CS;
-/*scopedTypeSpecifier: static typeSpecifier
-    | typeSpecifier;*/
-typeSpecifier: INT
-    | CHAR
-    | FLOAT
-    | BOOL;                          /*Try adding bool*/
-funDeclaration: typeSpecifier ID OP params CP statement
-    | ID OP params CP statement;
-params: paramList | ;
-paramList: paramList delimiter paramTypeList
-    | paramTypeList;
-paramTypeList: typeSpecifier paramIdList;
-paramIdList: paramIdList COMMA paramId      
-    | paramId;
-paramId: ID
-    | ID OS CS;
+declarationList: declarationList varDeclaration
+    | varDeclaration;
+varDeclaration: INT varDeclList_I delimiter
+    | CHAR varDeclList_C delimiter
+    | FLOAT varDeclList_F delimiter
+    | BOOL varDeclList_B delimiter;
+scopedVarDeclaration: INT varDeclList_I delimiter
+    | CHAR varDeclList_C delimiter
+    | FLOAT varDeclList_F delimiter
+    | BOOL varDeclList_B delimiter;
+varDeclList_I: varDeclList_I COMMA varDeclInitialize {strcpy(temp,(char *)$3); insert(0);}
+    | varDeclInitialize;
+varDeclList_C: varDeclList_C COMMA varDeclInitialize {strcpy(temp,(char *)$3); insert(1);}
+    | varDeclInitialize;
+varDeclList_F: varDeclList_F COMMA varDeclInitialize {strcpy(temp,(char *)$3); insert(2);}
+    | varDeclInitialize;
+varDeclList_B: varDeclList_B COMMA varDeclInitialize {strcpy(temp,(char *)$3); insert(3);}
+    | varDeclInitialize;
+varDeclInitialize: ID
+    | ID ASSIGN simpleExpression;
 statement: expressionStmt
     | compoundStmt
     | selectionStmt
@@ -61,13 +56,14 @@ statement: expressionStmt
 expressionStmt: expression delimiter
     | delimiter;
 compoundStmt: OB localDeclarations statementList CB;
-localDeclarations: localDeclarations scopedVarDeclaration | ;
-statementList: statementList statement | ;
-elsifList: elsifList ELSEIF simpleExpression statement | ;
+localDeclarations: localDeclarations scopedVarDeclaration
+    | ;
+statementList: statementList statement
+    | ;
+elsifList: elsifList ELSEIF simpleExpression statement
+    | ;
 selectionStmt: IF simpleExpression statement elsifList
     | IF simpleExpression statement elsifList ELSE statement;
-/*iterationRange: ID ASSIGN simpleExpression simpleExpression
-    | ID ASSIGN simpleExpression simpleExpression SEMI simpleExpression;*/    /*Check 'iterationRange' CFG*/
 iterationStmt: WHILE OP simpleExpression CP statement
     | FOR OP varDeclInitialize delimiter simpleExpression delimiter expression CP statement
     | FOR OP delimiter simpleExpression delimiter expression CP statement
@@ -121,7 +117,8 @@ immutable: OP expression CP
     | call
     | constant;
 call: ID OP args CP;
-args: argList | ;
+args: argList
+    | ;
 argList: argList COMMA expression
     | expression;
 constant: numconst
@@ -133,14 +130,38 @@ constant: numconst
 
 #include "lex.yy.c"
 
+void yyerror(const char *str){
+    printf("error");
+}
+
 int yywrap(){
     return 1;
 }
 
-int main()
-{
+void insert(int type1){
+    fl=0;
+    for(j=0;j<i;j++){
+        if(strcmp(temp,symbol[j])==0){
+            if(type[i]==type1)
+                printf("Redeclaration of variable");
+            else
+                printf("Multiple Declaration of Variable");
+                err_no=1;
+            fl=1;
+        }
+    }
+    if(fl==0){
+        type[i]=type1;
+        strcpy(symbol[i],temp);
+        i++;
+    }
+}
+
+int main(){
 	yyin=fopen("input.c","r");
 	yyparse();
+    yyout=fopen("output.txt","w");
 	fclose(yyin);
+    fclose(yyout);
 	return 0;
 }

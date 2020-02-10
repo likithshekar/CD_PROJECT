@@ -79,12 +79,13 @@
      delimiter = 295,
      SEMI = 296,
      COMMA = 297,
-     OP = 298,
-     CP = 299,
-     OB = 300,
-     CB = 301,
-     OS = 302,
-     CS = 303
+     NL = 298,
+     OP = 299,
+     CP = 300,
+     OB = 301,
+     CB = 302,
+     OS = 303,
+     CS = 304
    };
 #endif
 
