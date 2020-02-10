@@ -73,12 +73,13 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+int yylex(void);
 int err_no=0,fl=0,i=0,j=0,type[100];
 char symbol[100][100],temp[100];
 
 
 /* Line 189 of yacc.c  */
-#line 82 "c_yacc.tab.c"
+#line 83 "c_yacc.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -169,7 +170,7 @@ typedef int YYSTYPE;
 
 
 /* Line 264 of yacc.c  */
-#line 173 "c_yacc.tab.c"
+#line 174 "c_yacc.tab.c"
 
 #ifdef short
 # undef short
@@ -482,14 +483,14 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    29,    29,    30,    31,    32,    33,    34,    35,    40,
-      41,    42,    43,    44,    45,    46,    47,    48,    49,    76,
-      77,    78,    79,    80,    81,    82,    83,    84,    85,    86,
-      87,    88,    89,    90,    91,    92,    93,    94,    95,    96,
-      97,    98,    99,   100,   101,   102,   103,   104,   105,   106,
-     107,   108,   109,   110,   111,   112,   113,   114,   115,   116,
-     117,   118,   119,   120,   121,   122,   123,   124,   125,   126,
-     127,   127,   128,   128
+       0,    30,    30,    31,    32,    33,    34,    35,    36,    41,
+      42,    43,    44,    45,    46,    47,    48,    49,    50,    77,
+      78,    79,    80,    81,    82,    83,    84,    85,    86,    87,
+      88,    89,    90,    91,    92,    93,    94,    95,    96,    97,
+      98,    99,   100,   101,   102,   103,   104,   105,   106,   107,
+     108,   109,   110,   111,   112,   113,   114,   115,   116,   117,
+     118,   119,   120,   121,   122,   123,   124,   125,   126,   127,
+     128,   128,   129,   129
 };
 #endif
 
@@ -1470,35 +1471,35 @@ yyreduce:
         case 9:
 
 /* Line 1455 of yacc.c  */
-#line 40 "c_yacc.y"
+#line 41 "c_yacc.y"
     {strcpy(temp,(char *)(yyvsp[(3) - (3)])); insert(0);;}
     break;
 
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 42 "c_yacc.y"
+#line 43 "c_yacc.y"
     {strcpy(temp,(char *)(yyvsp[(3) - (3)])); insert(1);;}
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 44 "c_yacc.y"
+#line 45 "c_yacc.y"
     {strcpy(temp,(char *)(yyvsp[(3) - (3)])); insert(2);;}
     break;
 
   case 15:
 
 /* Line 1455 of yacc.c  */
-#line 46 "c_yacc.y"
+#line 47 "c_yacc.y"
     {strcpy(temp,(char *)(yyvsp[(3) - (3)])); insert(3);;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1502 "c_yacc.tab.c"
+#line 1503 "c_yacc.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1710,7 +1711,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 129 "c_yacc.y"
+#line 130 "c_yacc.y"
 
 
 #include "lex.yy.c"
@@ -1745,21 +1746,8 @@ void insert(int type1){
 int main(){
 	yyin=fopen("input.c","r");
 	yyparse();
-    yyout=fopen("output.c","w");
+    yyout=fopen("output.txt","w");
 	fclose(yyin);
     fclose(yyout);
-    /*if(err_no==0){
-        for(j=0;j<i;j++){
-            if(type[j]==0)
-                printf("INT-");
-            if(type[j]==1)
-                printf("FLOAT-");
-            if(type[j]==2)
-                printf("CHAR-");
-            if(type[j]==3)
-                printf("BOOL-");
-            printf("%sn",symbol[j]);
-        }
-    }*/
 	return 0;
 }
