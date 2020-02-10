@@ -46,6 +46,7 @@ digit [0-9]
 "char" return CHAR;
 "float" return FLOAT;
 "_bool" return BOOL;
+^"#include ".+ ;
 {letter}({letter}|{digit})* return ID;
 {digit}+  return numconst;
 \; return delimiter;

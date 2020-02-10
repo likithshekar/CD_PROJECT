@@ -6,16 +6,15 @@ int err_no=0,fl=0,i=0,j=0,type[100];
 char symbol[100][100],temp[100];
 %}
 
-%right '='
-%left '<' '>'
-%left '+' '-'
-%left '*' '/'
-%right '!'
+%right ASSIGN
+%left LE GE EQ NE LT GT
+%left ADD SUB
+%left MUL DIV
+%left AND OR
+%right NOT
 
 %token charconst stringconst
-%token SUB ADD MUL DIV MOD SADD SSUB SMUL SDIV SMOD INC DEC
-%token GT LT NE GE LE EQ ASSIGN
-%token AND OR NOT
+%token MOD SADD SSUB SMUL SDIV SMOD INC DEC
 %token IF ELSE ELSEIF FOR WHILE
 %token BREAK RETURN
 %token INT CHAR FLOAT BOOL
@@ -28,50 +27,70 @@ char symbol[100][100],temp[100];
 %%
 program: declarationList;
 declarationList: declarationList varDeclaration
-    | varDeclaration;
+    | varDeclaration
+    ;
 varDeclaration: INT varDeclList_I delimiter
     | CHAR varDeclList_C delimiter
     | FLOAT varDeclList_F delimiter
-    | BOOL varDeclList_B delimiter;
+    | BOOL varDeclList_B delimiter
+    ;
 scopedVarDeclaration: INT varDeclList_I delimiter
     | CHAR varDeclList_C delimiter
     | FLOAT varDeclList_F delimiter
-    | BOOL varDeclList_B delimiter;
-varDeclList_I: varDeclList_I COMMA varDeclInitialize {strcpy(temp,(char *)$3); insert(0);}
-    | varDeclInitialize;
-varDeclList_C: varDeclList_C COMMA varDeclInitialize {strcpy(temp,(char *)$3); insert(1);}
-    | varDeclInitialize;
-varDeclList_F: varDeclList_F COMMA varDeclInitialize {strcpy(temp,(char *)$3); insert(2);}
-    | varDeclInitialize;
-varDeclList_B: varDeclList_B COMMA varDeclInitialize {strcpy(temp,(char *)$3); insert(3);}
-    | varDeclInitialize;
+    | BOOL varDeclList_B delimiter
+    ;
+varDeclList_I: varDeclList_I COMMA varDeclInitialize
+    {strcpy(temp,(char *)$3); insert(0);}
+    | varDeclInitialize
+    ;
+varDeclList_C: varDeclList_C COMMA varDeclInitialize
+    {strcpy(temp,(char *)$3); insert(1);}
+    | varDeclInitialize
+    ;
+varDeclList_F: varDeclList_F COMMA varDeclInitialize
+    {strcpy(temp,(char *)$3); insert(2);}
+    | varDeclInitialize
+    ;
+varDeclList_B: varDeclList_B COMMA varDeclInitialize
+    {strcpy(temp,(char *)$3); insert(3);}
+    | varDeclInitialize
+    ;
 varDeclInitialize: ID
-    | ID ASSIGN simpleExpression;
+    | ID ASSIGN simpleExpression
+    ;
 statement: expressionStmt
     | compoundStmt
     | selectionStmt
     | iterationStmt
     | returnStmt
-    | breakStmt;
+    | breakStmt
+    ;
 expressionStmt: expression delimiter
-    | delimiter;
+    | delimiter
+    ;
 compoundStmt: OB localDeclarations statementList CB;
 localDeclarations: localDeclarations scopedVarDeclaration
-    | ;
+    |
+    ;
 statementList: statementList statement
-    | ;
+    |
+    ;
 elsifList: elsifList ELSEIF simpleExpression statement
-    | ;
+    |
+    ;
 selectionStmt: IF simpleExpression statement elsifList
-    | IF simpleExpression statement elsifList ELSE statement;
+    | IF simpleExpression statement elsifList ELSE statement
+    ;
 iterationStmt: WHILE OP simpleExpression CP statement
     | FOR OP varDeclInitialize delimiter simpleExpression delimiter expression CP statement
     | FOR OP delimiter simpleExpression delimiter expression CP statement
-    | FOR OP varDeclInitialize delimiter simpleExpression delimiter  CP statement
-    | FOR OP delimiter  simpleExpression delimiter CP statement
-    | FOR OP delimiter delimiter CP statement;
+    | FOR OP varDeclInitialize delimiter simpleExpression delimiter CP statement
+    | FOR OP delimiter simpleExpression delimiter CP statement
+    | FOR OP delimiter delimiter CP statement
+    ;
 returnStmt: RETURN delimiter
-    | RETURN expression delimiter;
+    | RETURN expression delimiter
+    ;
 breakStmt: BREAK delimiter;
 expression: mutable ASSIGN expression
     | mutable SADD expression
@@ -81,51 +100,69 @@ expression: mutable ASSIGN expression
     | mutable SMOD expression
     | mutable INC
     | mutable DEC
-    | simpleExpression;
+    | simpleExpression
+    ;
 simpleExpression: simpleExpression OR andExpression
-    | andExpression;
+    | andExpression
+    ;
 andExpression: andExpression AND unaryRelExpression
-    | unaryRelExpression;
+    | unaryRelExpression
+    ;
 unaryRelExpression: NOT unaryRelExpression
-    | relExpression;
+    | relExpression
+    ;
 relExpression: sumExpression relop sumExpression
-    | sumExpression;
+    | sumExpression
+    ;
 relop: LE
     | LT
     | GT
     | GE
     | EQ
-    | NE;
+    | NE
+    ;
 sumExpression: sumExpression sumop mulExpression
-    | mulExpression;
+    | mulExpression
+    ;
 sumop: ADD
-    | SUB;
+    | SUB
+    ;
 mulExpression: mulExpression mulop unaryExpression
-    | unaryExpression;
+    | unaryExpression
+    ;
 mulop: MUL
     | DIV
-    | MOD;
+    | MOD
+    ;
 unaryExpression: unaryop unaryExpression
-    | factor;
+    | factor
+    ;
 unaryop: SUB
-    | MUL;
+    | MUL
+    ;
 factor: immutable
-    | mutable;
+    | mutable
+    ;
 mutable: ID
-    | mutable OS expression CS;
+    | mutable OS expression CS
+    ;
 immutable: OP expression CP
     | call
-    | constant;
+    | constant
+    ;
 call: ID OP args CP;
 args: argList
-    | ;
+    |
+    ;
 argList: argList COMMA expression
-    | expression;
+    | expression
+    ;
 constant: numconst
     | charconst
     | stringconst
     |'true'|'True'
-    |'false'|'False';
+    |'false'|'False'
+    ;
 %%
 
 #include "lex.yy.c"
@@ -154,9 +191,8 @@ void insert(int type1){
 }
 
 int main(){
-	yyin=fopen("input.c","r");
+    yyin=fopen("input.c","r");
     yyout=fopen("output.txt","w");
-    yylex();
-	yyparse();
-	return 0;
+    yyparse();
+    return 0;
 }
