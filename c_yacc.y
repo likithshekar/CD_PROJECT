@@ -39,20 +39,16 @@ scopedVarDeclaration: INT varDeclList_I delimiter
     | FLOAT varDeclList_F delimiter
     | BOOL varDeclList_B delimiter
     ;
-varDeclList_I: varDeclList_I COMMA varDeclInitialize
-    {strcpy(temp,(char *)$3); insert(0);}
+varDeclList_I: varDeclList_I COMMA varDeclInitialize {strcpy(temp,(char *)$3); insert(0);}
     | varDeclInitialize
     ;
-varDeclList_C: varDeclList_C COMMA varDeclInitialize
-    {strcpy(temp,(char *)$3); insert(1);}
+varDeclList_C: varDeclList_C COMMA varDeclInitialize {strcpy(temp,(char *)$3); insert(1);}
     | varDeclInitialize
     ;
-varDeclList_F: varDeclList_F COMMA varDeclInitialize
-    {strcpy(temp,(char *)$3); insert(2);}
+varDeclList_F: varDeclList_F COMMA varDeclInitialize {strcpy(temp,(char *)$3); insert(2);}
     | varDeclInitialize
     ;
-varDeclList_B: varDeclList_B COMMA varDeclInitialize
-    {strcpy(temp,(char *)$3); insert(3);}
+varDeclList_B: varDeclList_B COMMA varDeclInitialize {strcpy(temp,(char *)$3); insert(3);}
     | varDeclInitialize
     ;
 varDeclInitialize: ID
