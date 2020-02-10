@@ -2,6 +2,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+int yylex(void);
 int err_no=0,fl=0,i=0,j=0,type[100];
 char symbol[100][100],temp[100];
 %}
@@ -124,8 +125,8 @@ argList: argList COMMA expression
 constant: numconst
     | charconst
     | stringconst
-    | 'true' | 'True'
-    | 'false' | 'False';
+    |'true'|'True'
+    |'false'|'False';
 %%
 
 #include "lex.yy.c"
