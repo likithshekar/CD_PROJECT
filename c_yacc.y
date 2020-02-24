@@ -129,7 +129,7 @@ s: headers
     | program {write_to_file();}
     ;
 headers: HASH INCLUDE HEADER_LITERAL
-    | HASH INCLUDE '<' libraries '>'
+    | HASH INCLUDE LT libraries GT
     ;
 libraries: STDIO
     | STDLIB
@@ -179,7 +179,11 @@ statement: expressionStmt
 expressionStmt: expression delimiter
     | delimiter
     ;
-compoundStmt: OB localDeclarations statementList CB;
+compoundStmt: OB new_scope localDeclarations statementList CB new_scope_end;
+new_scope: {scope = NEWSCOPE;}	
+    ;
+new_scope_end:{scope = OLDSCOPE;write_to_file();pop_my();}
+    ;
 localDeclarations: localDeclarations scopedVarDeclaration
     |
     ;

@@ -29,9 +29,6 @@ WS [ \t\v\n\f]
 %option yylineno
 
 %%
-\'.\'	return charconst;
-\".*\"	return stringconst;
-
 	/* Data Types */
 int		{ strcpy(yylval.string,yytext); return(INT); }
 float		{ strcpy(yylval.string,yytext); return(FLOAT); }
@@ -91,10 +88,6 @@ Letter?\"(\\.|[^\\"])*\"	{ return(STRING_LITERAL);}
 ")"		{return(CP); }
 ("[")		{return(OS); }
 ("]")		{return(CS); }
-"."		{return('.'); }
-"&"		{return('&'); }
-"!"		{return('!'); }
-"~"		{return('~'); }
 "-"		{ strcpy(yylval.string,yytext);return(SUB); }
 "+"		{ strcpy(yylval.string,yytext);return(ADD); }
 "*"		{ strcpy(yylval.string,yytext);return(MUL); }
@@ -102,16 +95,13 @@ Letter?\"(\\.|[^\\"])*\"	{ return(STRING_LITERAL);}
 "%"		{ strcpy(yylval.string,yytext);return(MOD); }
 "<"		{ strcpy(yylval.string,yytext);return(LT); }
 ">"		{ strcpy(yylval.string,yytext);return(GT); }
-"^"		{return('^'); }
-"|"		{return('|'); }
-"?"		{return('?'); }
 \&\&		{return AND; }
 \|\|		{return OR; }
 \!		{return NOT; }
-
-{WS}+		{ /* whitespace separates tokens */}
-
-"\n"		{yylval.ival=line++;return(NL);}
+[\n]		{yylval.ival=line++;}
+{WS}+		{;}
+\'.\'		{return charconst;}
+\".*\"		{return stringconst;}
 %%
 
 int yywrap(void)
