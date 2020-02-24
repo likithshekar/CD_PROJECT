@@ -160,8 +160,8 @@ argList: argList COMMA expression
 constant: numconst
     | charconst
     | stringconst
-    |'true'|'True'
-    |'false'|'False'
+    |'true'
+    |'false'
     ;
 %%
 
