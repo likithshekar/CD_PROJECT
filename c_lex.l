@@ -88,6 +88,9 @@ Letter?\"(\\.|[^\\"])*\"	{ return(STRING_LITERAL);}
 ")"		{return(CP); }
 ("[")		{return(OS); }
 ("]")		{return(CS); }
+"."		{return('.'); }
+"&"		{return('&'); }
+"~"		{return('~'); }
 "-"		{ strcpy(yylval.string,yytext);return(SUB); }
 "+"		{ strcpy(yylval.string,yytext);return(ADD); }
 "*"		{ strcpy(yylval.string,yytext);return(MUL); }
@@ -98,6 +101,9 @@ Letter?\"(\\.|[^\\"])*\"	{ return(STRING_LITERAL);}
 \&\&		{return AND; }
 \|\|		{return OR; }
 \!		{return NOT; }
+"^"		{return('^'); }
+"|"		{return('|'); }
+"?"		{return('?'); }
 [\n]		{yylval.ival=line++;}
 {WS}+		{;}
 \'.\'		{return charconst;}

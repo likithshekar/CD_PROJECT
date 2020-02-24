@@ -144,15 +144,58 @@ program: declarationList
 declarationList: declarationList varDeclaration
     | varDeclaration
     ;
-varDeclaration: INT varDeclList_I delimiter
-    | CHAR varDeclList_C delimiter
-    | FLOAT varDeclList_F delimiter
-    | BOOL varDeclList_B delimiter
-    ;
-scopedVarDeclaration: INT varDeclList_I delimiter
-    | CHAR varDeclList_C delimiter
-    | FLOAT varDeclList_F delimiter
-    | BOOL varDeclList_B delimiter
+varDeclaration: typeSpecifier varDeclList_I delimiter
+{
+	char *type = $1;
+	if(index($2,'?') != NULL){
+		char *_ = index($2, '?');
+		int _index = (int)(_ - $2);
+		int value_length = strlen($2) - _index;
+		char name[_index];
+		strncpy(name,$2,_index);
+		name[_index] = '\0';
+		char value[value_length];
+		strncpy(value,$2+_index+1,value_length);
+		value[value_length] = '\0';
+		coercion(type,value);
+		if(not_defined == 0)
+			push_my(type,name,value,scope);
+		not_defined = 0;
+	}
+	else{
+		char name[strlen($2)+1];
+		strcpy(name,$2);
+		push_my(type,name,"",scope);
+	}
+};
+scopedVarDeclaration: typeSpecifier varDeclList_I delimiter
+{
+	char *type = $1;
+	if(index($2,'?') != NULL){
+		char *_ = index($2, '?');
+		int _index = (int)(_ - $2);
+		int value_length = strlen($2) - _index;
+		char name[_index];
+		strncpy(name,$2,_index);
+		name[_index] = '\0';
+		char value[value_length];
+		strncpy(value,$2+_index+1,value_length);
+		value[value_length] = '\0';
+		coercion(type,value);
+		if(not_defined == 0)
+			push_my(type,name,value,scope);
+		not_defined = 0;
+	}
+	else{
+		char name[strlen($2)+1];
+		strcpy(name,$2);
+		push_my(type,name,"",scope);
+	}
+};
+typeSpecifier:INT
+    | CHAR
+    | FLOAT
+    | BOOL
     ;
 varDeclList_I: varDeclList_I COMMA varDeclInitialize
     | varDeclInitialize
@@ -166,8 +209,14 @@ varDeclList_F: varDeclList_F COMMA varDeclInitialize
 varDeclList_B: varDeclList_B COMMA varDeclInitialize
     | varDeclInitialize
     ;
-varDeclInitialize: ID
-    | ID ASSIGN simpleExpression
+varDeclInitialize: ID{
+	strncpy($$,$1,strlen($1) - 1);$$[strlen($$)] = '\0';
+}
+    | ID ASSIGN simpleExpression{
+	strncpy($$+strlen($$), "?", 2);
+	$$[strlen($$)] = '\0';
+	strncpy($$+strlen($$), $3, sizeof($3));
+}
     ;
 statement: expressionStmt
     | compoundStmt
