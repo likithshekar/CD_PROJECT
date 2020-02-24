@@ -1,9 +1,31 @@
 %{
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-int err_no=0,fl=0,i=0,j=0,type[100];
-char symbol[100][100],temp[100];
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <string.h>
+	#include <ctype.h>
+	#define LIMIT 1024
+	#define MAX_SYMBOLS 100			// defines max no of record in each symbol table
+	#define MAX_SCOPE 10			// defines max no of scopes allowed 
+	#define NEWSCOPE 1				// denoted new scope
+	#define OLDSCOPE 0				// denotes old scope
+	#define NO_OF_KEYWORD 7			// denotes no of keywords
+	#define LENGTH_OF_KEYWORDS 7	// max length of keyword string
+	#define MAX_MEMBER 10			// max number of member in struct
+	#define TYPE_LENGTH 6			// length of type int float void ....
+	#define MAX_NO_OF_STRUCT 10		// max_no of structure which can be defined in a scope
+	#define STRUCT_FLAG 2			// Flag to know struct which is declared
+	
+	
+	/* the start index for the member of nested struct in the parent struct  initialized at nested_struct rule */ 
+	int nested_struct_start_index;
+	
+	// keyword_Array
+	char keywords[NO_OF_KEYWORD][LENGTH_OF_KEYWORDS] = {"char","int","float","void","main","for","struct"};
+	int c = 0;
+	int scope = NEWSCOPE;
+	void yyerror(const char*);
+	int yylex();
+
 %}
 
 %right ASSIGN
