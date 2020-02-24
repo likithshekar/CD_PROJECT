@@ -65,9 +65,9 @@ Letter?\"(\\.|[^\\"])*\"	{ return(STRING_LITERAL);}
 	/* Assignment Operators */
 "+="		{return(SADD); }
 "-="		{return(SSUB); }
-\%\=		{return(SMOD); }
-\*\=		{return(SMUL); }
-\/\=		{return(SDIV); }
+"%="		{return(SMOD); }
+"*="		{return(SMUL); }
+"/="		{return(SDIV); }
 
 	/* Relational Operators */
 "++"		{return(INC); }
@@ -104,7 +104,7 @@ Letter?\"(\\.|[^\\"])*\"	{ return(STRING_LITERAL);}
 "^"		{return('^'); }
 "|"		{return('|'); }
 "?"		{return('?'); }
-[\n]		{yylval.ival=line++;}
+[\n]		{yylval.ival=line++;return(NL);}
 {WS}+		{;}
 \'.\'		{return charconst;}
 \".*\"		{return stringconst;}

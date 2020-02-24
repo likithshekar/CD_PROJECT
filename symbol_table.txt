@@ -1,0 +1,12 @@
+TYPE : KEYWORD		NAME :  char		VALUE :      
+TYPE : KEYWORD		NAME :   int		VALUE :      
+TYPE : KEYWORD		NAME : float		VALUE :      
+TYPE : KEYWORD		NAME :  bool		VALUE :      
+TYPE : KEYWORD		NAME :    if		VALUE :      
+TYPE : KEYWORD		NAME :  else		VALUE :      
+TYPE : KEYWORD		NAME : elseif		VALUE :      
+TYPE : KEYWORD		NAME :   for		VALUE :      
+TYPE : KEYWORD		NAME : while		VALUE :      
+TYPE : KEYWORD		NAME : break		VALUE :      
+TYPE : KEYWORD		NAME : return		VALUE :      
+

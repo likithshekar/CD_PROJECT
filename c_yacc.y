@@ -22,9 +22,13 @@
 	// keyword_Array
 	char keywords[NO_OF_KEYWORD][LENGTH_OF_KEYWORDS] = {"char","int","float","bool","if","else","elseif","for","while","break","return"};
 	int c = 0;
+	int scope = NEWSCOPE;
 	void yyerror(const char*);
 	int yylex();
 	
+	// used for ternary construct to denote if condition is true or false
+	int ternary_flag = 0;
+
 	// flag to mark if the varaible is not_defined. Used to decide wheather to push the value in the symbol table or not.
 	// 1 => the varaible is not defined.
 	int not_defined = 0;
@@ -49,6 +53,11 @@
 		struct struct_data struct_defined[MAX_NO_OF_STRUCT];
 		struct symbol symbol_table[MAX_SYMBOLS];
 	}symbol_table_stack[MAX_SCOPE];
+	
+	/* used if know if struct is used as member to declare a variable of its type
+	   1 means used 
+	*/
+	int struct_reference_used = 0;
 	
 	int top_stack_for_symbol_tables = -1;
 	
@@ -119,6 +128,8 @@
 %token delimiter SEMI COMMA NL
 %token OP CP OB CB OS CS
 
+%type <string> declarationList varDeclaration scopedVarDeclaration typeSpecifier varDeclList varDeclInitialize statement expressionStmt compoundStmt localDeclarations statementList elsifList selectionStmt iterationStmt returnStmt breakStmt expression simpleExpression andExpression unaryRelExpression relExpression relop sumExpression sumop mulExpression mulop unaryExpression unaryop factor mutable immutable call args argList constant ID
+
 %start external
 
 %%
@@ -144,8 +155,7 @@ program: declarationList
 declarationList: declarationList varDeclaration
     | varDeclaration
     ;
-varDeclaration: typeSpecifier varDeclList_I delimiter
-{
+varDeclaration: typeSpecifier varDeclList delimiter{
 	char *type = $1;
 	if(index($2,'?') != NULL){
 		char *_ = index($2, '?');
@@ -168,7 +178,7 @@ varDeclaration: typeSpecifier varDeclList_I delimiter
 		push_my(type,name,"",scope);
 	}
 };
-scopedVarDeclaration: typeSpecifier varDeclList_I delimiter
+scopedVarDeclaration: typeSpecifier varDeclList delimiter
 {
 	char *type = $1;
 	if(index($2,'?') != NULL){
@@ -197,16 +207,7 @@ typeSpecifier:INT
     | FLOAT
     | BOOL
     ;
-varDeclList_I: varDeclList_I COMMA varDeclInitialize
-    | varDeclInitialize
-    ;
-varDeclList_C: varDeclList_C COMMA varDeclInitialize
-    | varDeclInitialize
-    ;
-varDeclList_F: varDeclList_F COMMA varDeclInitialize
-    | varDeclInitialize
-    ;
-varDeclList_B: varDeclList_B COMMA varDeclInitialize
+varDeclList: varDeclList COMMA varDeclInitialize
     | varDeclInitialize
     ;
 varDeclInitialize: ID{
@@ -264,6 +265,8 @@ expression: mutable ASSIGN expression
     | mutable SMOD expression
     | mutable INC
     | mutable DEC
+    | INC mutable
+    | DEC mutable
     | simpleExpression
     ;
 simpleExpression: simpleExpression OR andExpression
@@ -275,7 +278,10 @@ andExpression: andExpression AND unaryRelExpression
 unaryRelExpression: NOT unaryRelExpression
     | relExpression
     ;
-relExpression: sumExpression relop sumExpression
+relExpression: sumExpression relop sumExpression{
+	check($1,$3);
+	fun($$,$1,$2,$3);
+}
     | sumExpression
     ;
 relop: LE
@@ -285,13 +291,19 @@ relop: LE
     | EQ
     | NE
     ;
-sumExpression: sumExpression sumop mulExpression
+sumExpression: sumExpression sumop mulExpression{
+	check($1,$3);
+	fun($$,$1,$2,$3);
+}
     | mulExpression
     ;
 sumop: ADD
     | SUB
     ;
-mulExpression: mulExpression mulop unaryExpression
+mulExpression: mulExpression mulop unaryExpression{
+	check($1,$3);
+	fun($$,$1,$2,$3);
+}
     | unaryExpression
     ;
 mulop: MUL
@@ -310,7 +322,26 @@ factor: immutable
 mutable: ID
     | mutable OS expression CS
     ;
-immutable: OP expression CP
+immutable: OP expression CP{
+	int flag = 1;
+	int i=0;
+	while($2[i] != '\0'){
+		if(!isdigit($2[i])){
+			flag = 0;
+			break;
+		}
+		i++;
+	}
+	if(!flag){
+		strcpy($$,"(");
+		strcpy($$+1,$2);
+		strcat($$,")");
+		$$[strlen($$)] = '\0';
+	}
+	else{
+		strcpy($$,$2);
+	}
+}
     | call
     | constant
     ;
@@ -324,18 +355,8 @@ argList: argList COMMA expression
 constant: numconst
     | charconst
     | stringconst
-    |"True"
-    |"False"
     ;
 %%
-
-#include "lex.yy.c"
-
-int yywrap(){
-    return 1;
-}
-
-
 
 void yyerror(const char *str)
 {
