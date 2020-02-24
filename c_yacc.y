@@ -100,6 +100,16 @@
 %left AND OR
 %right NOT
 
+%union
+{
+	int ival;
+	char string[128];
+}
+
+%token HASH INCLUDE DEFINE STDIO STDLIB MATH STRING TIME
+
+%token	STRING_LITERAL HEADER_LITERAL
+
 %token charconst stringconst
 %token MOD SADD SSUB SMUL SDIV SMOD INC DEC
 %token IF ELSE ELSEIF FOR WHILE
@@ -115,8 +125,17 @@
 external: s
     | external s
     ;
-s: program
-    | headers
+s: headers
+    | program {write_to_file();}
+    ;
+headers: HASH INCLUDE HEADER_LITERAL
+    | HASH INCLUDE '<' libraries '>'
+    ;
+libraries: STDIO
+    | STDLIB
+    | MATH
+    | STRING
+    | TIME
     ;
 program: declarationList 
     | program statement

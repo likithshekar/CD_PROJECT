@@ -60,9 +60,9 @@ break		{ return(BREAK); }
 return		{ return(RETURN); }
 
 	/* User Defined Data Types, Identifiers */
-{letter}{A}*			{ strcpy(yylval.string,yytext); return ID;}
-{digit}+			{ strcpy(yylval.string,yytext); return numconst;}
-\"{A}+(".h"|".c")\"		{ return HEADER_LITERAL;}
+{letter}{A}*			{ strcpy(yylval.string,yytext); return(ID);}
+{digit}+			{ strcpy(yylval.string,yytext); return(numconst);}
+\"{A}+(".h"|".c")\"		{ return(HEADER_LITERAL);}
 Letter?\"(\\.|[^\\"])*\"	{ return(STRING_LITERAL);}
 
 	/* Assignment Operators */
