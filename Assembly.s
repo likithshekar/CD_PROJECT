@@ -1,0 +1,14 @@
+.text
+MOV R0,=a
+MOV R1,[R0]
+MOV R2,=b
+MOV R3,[R2]
+MOV R4,=t0
+MOV R5,[R4]
+ADD R5,R1,R3
+STR R5, [R4]
+SWI 0x011
+.DATA
+a: .WORD 9
+b: .WORD 6
+i: .WORD t0
