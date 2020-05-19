@@ -92,9 +92,9 @@ def genAssembly(lines, file):
     for i in lines:
         i = i.strip("\n")
         
-        if(len(i.split()) == 2):
-            if(i.split()[0] == "GOTO"):
-                st = "B " + i.split()[1]
+        if(len(i.split(' ')) == 2):
+            if(i.split(' ')[0] == "goto"):
+                st = "B " + i.split(' ')[1]
                 print("ARM STATEMENT: ", st)
                 time.sleep(0.02)
                 stmt.append(st)
@@ -103,8 +103,8 @@ def genAssembly(lines, file):
                 print("ARM STATEMENT: ", st)
                 time.sleep(0.02)
                 stmt.append(st)
-        if(len(i.split()) == 5):
-            lhs, ass, arg1, op, arg2 = i.split()
+        if(len(i.split(' ')) == 5):
+            lhs, ass, arg1, op, arg2 = i.split(' ')
             if(arg1.isdigit() and arg2.isdigit()):
                 
                 stmt, regval, r1 = loadconstant(stmt, regval, arg1)
@@ -144,9 +144,9 @@ def genAssembly(lines, file):
                 print("ARM STATEMENT: ", st)
                 time.sleep(0.02)
                 stmt.append(st)
-        if(len(i.split())==4 and i.split()[0]=="ARR"):
-            variable = i.split()[1]
-            value = i.split()[3].split(",")
+        if(len(i.split(' '))==4 and i.split(' ')[0]=="ARR"):
+            variable = i.split(' ')[1]
+            value = i.split(' ')[3].split(",")
             if(variable not in varlist):
                 out = ""
                 out = out + variable + ":" + " .WORD "
@@ -159,10 +159,10 @@ def genAssembly(lines, file):
                 vardec.append(out)
                 varlist.append(variable)
                 
-        if(len(i.split()) == 4 and i.split()[0]!="ARR"):
+        if(len(i.split(' ')) == 4 and i.split(' ')[0]!="ARR"):
             
-            condition = i.split()[1]
-            label = i.split()[3]
+            condition = i.split(' ')[1]
+            label = i.split(' ')[3]
             flag = 0
             lhs = ""
             rhs = ""
@@ -219,9 +219,9 @@ def genAssembly(lines, file):
                     
                 
             
-        if(len(i.split()) == 3):
-            variable = i.split()[0]
-            value = i.split()[2]
+        if(len(i.split(' ')) == 3):
+            variable = i.split(' ')[0]
+            value = i.split(' ')[2]
             variable = str(variable)
             if variable not in varlist:
                 out = ""

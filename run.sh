@@ -6,6 +6,7 @@ yacc -d icg.y
 gcc lex.yy.c y.tab.c -ll -ly -o ICG
 clear
 echo "Simple C Compiler Project"
+echo "-------------------------"
 echo "Supported constructs : For loop, Ternary Operators and Structures"
 
 echo "./AST < filename for AST. Output in Output/ast.txt"

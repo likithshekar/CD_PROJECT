@@ -158,8 +158,8 @@ iteration_statement
 		}
 	expression_statement
 		{
-			fprintf(fp_icg, "ifFalse t%d goto L%d\n", --tempno, ln);
-			fprintf(fp_quad, "\tifFalse\t\tt%d\t\t  \t\tL%d\n", tempno, ln);
+			fprintf(fp_icg, "if False t%d goto L%d\n", --tempno, ln);
+			fprintf(fp_quad, "\tif False\t\tt%d\t\t  \t\tL%d\n", tempno, ln);
 			tempno++;
 		}
 	expr  ')' statement 	 
@@ -593,8 +593,8 @@ conditional_expression
 	: equality_expression 	{	strcpy($$, $1);  }
 	| equality_expression
 		{ 
-			fprintf(fp_icg,"ifFalse t%d goto L%d\n", --tempno, ln); 
-			fprintf(fp_quad, "\tifFalse\t\tt%d\t\t  \t\tL%d\n", tempno, ln);
+			fprintf(fp_icg,"if False t%d goto L%d\n", --tempno, ln); 
+			fprintf(fp_quad, "\tif False\t\tt%d\t\t  \t\tL%d\n", tempno, ln);
 			tempno++;		
 			ln++;
 		} 

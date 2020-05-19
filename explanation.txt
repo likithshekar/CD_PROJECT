@@ -1,0 +1,21 @@
+
+C - Compiler
+
+
+Team:
+Likith R Shekar - PES1201700147
+Siddharth Shankar - PES1201700691
+Neha N D - PES1201700742
+Dinakar S M - PES1201700857
+
+	10-min video max
+
+	Grammar (Just show grammar and give basic explanation, for-loop and teritary operations(line 126 in Grammar) are used)
+	Preprocessing and Symbol Table (Inside Output folder)
+	Syntax Validity (run ./AST < input.c while uncommenting each error. When error doesn't affect code the code runs despite error, this is panic mode recovery, where it jumps to the next delimiter and continues exec)
+	AST (run ./AST < input2.c as it's smaller and easier to explain, 'Dc b' means it's only declared and not initialized, use preorder to understand the tree)
+	ICG (run ./ICG < input2.c don't run optimization code as it's pointless for this example)
+	Assembly Code Generation (run python generate.py Output/icg.txt. Do this with input2.c not with input.c as theres a problem with goto
+which comes in input.c)
+
+P.S. remove the brackets when showing this file.

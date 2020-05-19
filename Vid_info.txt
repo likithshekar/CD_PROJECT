@@ -1,0 +1,23 @@
+Details related to creation of Compiler Design Project Video:
+
+o Must be a screen recording over voice (can be created by one of the members of the team).
+
+o Duration: 10 Minutes
+
+o Introduce your team (photo, name, SRN) and the project title.
+
+	o Show your grammar via a text file, specify the details handled. Specify the points to be kept in mind while framing the grammar.
+
+	o Show syntax validity test cases.
+
+	o Share symbol table structure and implementation details + suggestions + challenges.
+
+	o Share ICG design and implementation details.
+
+	o Share AST design and implementation details. Separately show a tree diagram for better understanding.
+
+	o Share Target Code generation design(ISA) and implementation details.
+
+	o Share your learnings.
+
+	o Provide appropriate suggestions if any.
