@@ -1,0 +1,12 @@
+rm lex.yy.c
+rm y.tab.c
+rm y.tab.h
+rm Assembly.s
+rm AST
+rm ICG
+rm Output/ast.txt
+rm Output/icg.txt
+rm Output/quad.txt
+rm Output/preorder.txt
+rm Output/symbol_table.txt
+rm Output/preprocessed_code.c
