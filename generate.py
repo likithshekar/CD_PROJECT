@@ -1,91 +1,5 @@
 import time
 
-def find(stmt, op, label):
-    if(op == ">"):
-        cmp = "BGT "+label
-        print("ARM STATEMENT: ", cmp)
-        time.sleep(0.02)
-        stmt.append(cmp)
-    elif(op == "<"):
-        cmp = "BLT "+label
-        print("ARM STATEMENT: ", cmp)
-        time.sleep(0.02)
-        stmt.append(cmp)
-    elif(op == ">="):
-        cmp = "BGE "+label
-        print("ARM STATEMENT: ", cmp)
-        time.sleep(0.02)
-        stmt.append(cmp)
-    elif(op == "<="):
-        cmp = "BLE "+label
-        print("ARM STATEMENT: ", cmp)
-        time.sleep(0.02)
-        stmt.append(cmp)
-    elif(op == "=="):
-        cmp = "BEQ "+label
-        print("ARM STATEMENT: ", cmp)
-        time.sleep(0.02)
-        stmt.append(cmp)
-    elif(op == "!="):
-        cmp = "BNE "+label
-        print("ARM STATEMENT: ", cmp)
-        time.sleep(0.02)
-        stmt.append(cmp)
-    return stmt
-
-def loadc(stmt, regval, value):
-    lstmt = "MOV "+"R"+str(regval)+"," + "#" + value
-    stmt.append(lstmt)
-    print("ARM STATEMENT: ", lstmt)
-    time.sleep(0.02)
-    r1 = regval
-    regval = (regval + 1)%13
-    return stmt, regval, r1
-
-
-def loadv(stmt, regval, value):
-    st1 = "MOV "+"R" + str(regval) + ","+"="+str(value)
-    r1 = regval
-    regval = (regval + 1)%13
-                
-    print("ARM STATEMENT: ", st1)
-    time.sleep(0.02)
-    stmt.append(st1)
-    
-    st2 = "MOV "+"R" + str(regval) +","+ "[R" + str(r1) + "]"
-    stmt.append(st2)
-    print("ARM STATEMENT: ", st2)
-    time.sleep(0.02)
-    r2 = regval
-    regval = (regval + 1)%13
-    return stmt, regval, r1, r2
-
-def biop(stmt, lhs, arg1, op, arg2):
-    if(op == "+"):
-        st = "ADD "+"R"+str(lhs)+","+"R"+str(arg1)+",R"+str(arg2)
-        print("ARM STATEMENT: ", st)
-        time.sleep(0.02)
-        stmt.append(st)
-        
-    elif(op == "-"):
-        st = "SUBS "+"R"+str(lhs)+","+"R"+str(arg1)+",R"+str(arg2)
-        print("ARM STATEMENT: ", st)
-        time.sleep(0.02)
-        stmt.append(st)        
-        
-    elif(op == "*"):
-        st = "MUL "+"R"+str(lhs)+","+"R"+str(arg1)+",R"+str(arg2)
-        print("ARM STATEMENT: ", st)
-        time.sleep(0.02)
-        stmt.append(st)        
-        
-    elif(op == "/"):
-        st = "SDIV "+"R"+str(lhs)+","+"R"+str(arg1)+",R"+str(arg2)
-        print("ARM STATEMENT: ", st)
-        time.sleep(0.02)
-        stmt.append(st)   
-    return stmt
-    
 def generate(lines, file):
     vardec = []
     stmt = []
@@ -105,6 +19,7 @@ def generate(lines, file):
                 print("ARM STATEMENT: ", st)
                 time.sleep(0.02)
                 stmt.append(st)
+
         if(len(i.split(' ')) == 5):
             lhs, ass, arg1, op, arg2 = i.split(' ')
             if(arg1.isdigit() and arg2.isdigit()):
@@ -146,6 +61,7 @@ def generate(lines, file):
                 print("ARM STATEMENT: ", st)
                 time.sleep(0.02)
                 stmt.append(st)
+
         if(len(i.split(' '))==4 and i.split(' ')[0]=="ARR"):
             variable = i.split(' ')[1]
             value = i.split(' ')[3].split(",")
@@ -240,8 +156,7 @@ def generate(lines, file):
                 time.sleep(0.02)
                 stmt.append(st)
     return vardec, stmt
-                
-                
+
             
 def wassembly(stmt, vardec, File):
     File.write(".text\n")
@@ -255,8 +170,93 @@ def wassembly(stmt, vardec, File):
         File.write("%s\n"%(i))    
     print("Written to File")
 
+def find(stmt, op, label):
+    if(op == ">"):
+        cmp = "BGT "+label
+        print("ARM STATEMENT: ", cmp)
+        time.sleep(0.02)
+        stmt.append(cmp)
+    elif(op == "<"):
+        cmp = "BLT "+label
+        print("ARM STATEMENT: ", cmp)
+        time.sleep(0.02)
+        stmt.append(cmp)
+    elif(op == ">="):
+        cmp = "BGE "+label
+        print("ARM STATEMENT: ", cmp)
+        time.sleep(0.02)
+        stmt.append(cmp)
+    elif(op == "<="):
+        cmp = "BLE "+label
+        print("ARM STATEMENT: ", cmp)
+        time.sleep(0.02)
+        stmt.append(cmp)
+    elif(op == "=="):
+        cmp = "BEQ "+label
+        print("ARM STATEMENT: ", cmp)
+        time.sleep(0.02)
+        stmt.append(cmp)
+    elif(op == "!="):
+        cmp = "BNE "+label
+        print("ARM STATEMENT: ", cmp)
+        time.sleep(0.02)
+        stmt.append(cmp)
+    return stmt
+
+def loadc(stmt, regval, value):
+    lstmt = "MOV "+"R"+str(regval)+"," + "#" + value
+    stmt.append(lstmt)
+    print("ARM STATEMENT: ", lstmt)
+    time.sleep(0.02)
+    r1 = regval
+    regval = (regval + 1)%13
+    return stmt, regval, r1
+
+def loadv(stmt, regval, value):
+    st1 = "MOV "+"R" + str(regval) + ","+str(value)
+    r1 = regval
+    regval = (regval + 1)%13
+                
+    print("ARM STATEMENT: ", st1)
+    time.sleep(0.02)
+    stmt.append(st1)
+    
+    st2 = "MOV "+"R" + str(regval) +","+ "[R" + str(r1) + "]"
+    stmt.append(st2)
+    print("ARM STATEMENT: ", st2)
+    time.sleep(0.02)
+    r2 = regval
+    regval = (regval + 1)%13
+    return stmt, regval, r1, r2
+
+def biop(stmt, lhs, arg1, op, arg2):
+    if(op == "+"):
+        st = "ADD "+"R"+str(lhs)+","+"R"+str(arg1)+",R"+str(arg2)
+        print("ARM STATEMENT: ", st)
+        time.sleep(0.02)
+        stmt.append(st)
+        
+    elif(op == "-"):
+        st = "SUBS "+"R"+str(lhs)+","+"R"+str(arg1)+",R"+str(arg2)
+        print("ARM STATEMENT: ", st)
+        time.sleep(0.02)
+        stmt.append(st)        
+        
+    elif(op == "*"):
+        st = "MUL "+"R"+str(lhs)+","+"R"+str(arg1)+",R"+str(arg2)
+        print("ARM STATEMENT: ", st)
+        time.sleep(0.02)
+        stmt.append(st)        
+        
+    elif(op == "/"):
+        st = "SDIV "+"R"+str(lhs)+","+"R"+str(arg1)+",R"+str(arg2)
+        print("ARM STATEMENT: ", st)
+        time.sleep(0.02)
+        stmt.append(st)   
+    return stmt
+
 fin = open("Output/icg.txt", "r")
-fout = open("Assembly.s", "w")
+fout = open("Output/Assembly.s", "w")
 
 lines = fin.readlines()
 print("Generating Assembly ... ")
