@@ -1,5 +1,6 @@
 import time
-def findoperation(stmt, op, label):
+
+def find(stmt, op, label):
     if(op == ">"):
         cmp = "BGT "+label
         print("ARM STATEMENT: ", cmp)
@@ -32,7 +33,7 @@ def findoperation(stmt, op, label):
         stmt.append(cmp)
     return stmt
 
-def loadconstant(stmt, regval, value):
+def loadc(stmt, regval, value):
     lstmt = "MOV "+"R"+str(regval)+"," + "#" + value
     stmt.append(lstmt)
     print("ARM STATEMENT: ", lstmt)
@@ -42,7 +43,7 @@ def loadconstant(stmt, regval, value):
     return stmt, regval, r1
 
 
-def loadvariable(stmt, regval, value):
+def loadv(stmt, regval, value):
     st1 = "MOV "+"R" + str(regval) + ","+"="+str(value)
     r1 = regval
     regval = (regval + 1)%13
@@ -59,7 +60,7 @@ def loadvariable(stmt, regval, value):
     regval = (regval + 1)%13
     return stmt, regval, r1, r2
 
-def binaryoperation(stmt, lhs, arg1, op, arg2):
+def biop(stmt, lhs, arg1, op, arg2):
     if(op == "+"):
         st = "ADD "+"R"+str(lhs)+","+"R"+str(arg1)+",R"+str(arg2)
         print("ARM STATEMENT: ", st)
@@ -85,7 +86,7 @@ def binaryoperation(stmt, lhs, arg1, op, arg2):
         stmt.append(st)   
     return stmt
     
-def genAssembly(lines, file):
+def generate(lines, file):
     vardec = []
     stmt = []
     varlist = []
@@ -108,49 +109,46 @@ def genAssembly(lines, file):
             lhs, ass, arg1, op, arg2 = i.split(' ')
             if(arg1.isdigit() and arg2.isdigit()):
                 
-                stmt, regval, r1 = loadconstant(stmt, regval, arg1)
-                stmt, regval, r2 = loadconstant(stmt, regval, arg2)
-                stmt, regval, r3, r4 = loadvariable(stmt, regval, lhs)
-                stmt = binaryoperation(stmt, r4, r1, op, r2)
+                stmt, regval, r1 = loadc(stmt, regval, arg1)
+                stmt, regval, r2 = loadc(stmt, regval, arg2)
+                stmt, regval, r3, r4 = loadv(stmt, regval, lhs)
+                stmt = biop(stmt, r4, r1, op, r2)
                 st = "STR R"+str(r4) + ", [R" + str(r3) + "]"
                 print("ARM STATEMENT: ", st)
                 time.sleep(0.02)
                 stmt.append(st)
                 
             elif(arg1.isdigit()):
-                stmt, regval, r1 = loadconstant(stmt, regval, arg1)
-                stmt, regval, r2, r3 = loadvariable(stmt, regval, arg2)
-                stmt, regval, r4, r5 = loadvariable(stmt, regval, lhs)
-                stmt = binaryoperation(stmt, r5, r1, op, r3)
+                stmt, regval, r1 = loadc(stmt, regval, arg1)
+                stmt, regval, r2, r3 = loadv(stmt, regval, arg2)
+                stmt, regval, r4, r5 = loadv(stmt, regval, lhs)
+                stmt = biop(stmt, r5, r1, op, r3)
                 st = "STR R"+str(r5) + ", [R" + str(r4) + "]"
                 print("ARM STATEMENT: ", st)
                 time.sleep(0.02)
                 stmt.append(st)
-                
+                #STR Op
             elif(arg2.isdigit()):
-                stmt, regval, r1,r2 = loadvariable(stmt, regval, arg1)
-                stmt, regval, r3 = loadconstant(stmt, regval, arg2)
-                stmt, regval, r4, r5 = loadvariable(stmt, regval, lhs)
-                stmt = binaryoperation(stmt, r5, r2, op, r3)
+                stmt, regval, r1,r2 = loadv(stmt, regval, arg1)
+                stmt, regval, r3 = loadc(stmt, regval, arg2)
+                stmt, regval, r4, r5 = loadv(stmt, regval, lhs)
+                stmt = biop(stmt, r5, r2, op, r3)
                 st = "STR R"+str(r5) + ", [R" + str(r4) + "]"
                 print("ARM STATEMENT: ", st)
                 time.sleep(0.02)
                 stmt.append(st)                
-                
             else:
-                stmt, regval, r1,r2 = loadvariable(stmt, regval, arg1)
-                stmt, regval, r3,r4 = loadvariable(stmt, regval, arg2)
-                stmt, regval, r5,r6 = loadvariable(stmt, regval, lhs)
-                stmt = binaryoperation(stmt, r6, r2, op, r4)
+                stmt, regval, r1,r2 = loadv(stmt, regval, arg1)
+                stmt, regval, r3,r4 = loadv(stmt, regval, arg2)
+                stmt, regval, r5,r6 = loadv(stmt, regval, lhs)
+                stmt = biop(stmt, r6, r2, op, r4)
                 st = "STR R"+str(r6) + ", [R" + str(r5) + "]"
                 print("ARM STATEMENT: ", st)
                 time.sleep(0.02)
                 stmt.append(st)
-                
         if(len(i.split(' '))==4 and i.split(' ')[0]=="ARR"):
             variable = i.split(' ')[1]
             value = i.split(' ')[3].split(",")
-            
             if(variable not in varlist):
                 out = ""
                 out = out + variable + ":" + " .WORD "
@@ -186,41 +184,40 @@ def genAssembly(lines, file):
                     rhs+=j
             
             if(rhs.isdigit() and lhs.isdigit()):
-                stmt, regval, r1 = loadconstant(stmt, regval, lhs)
-                stmt, regval, r2 = loadconstant(stmt, regval, rhs)
+                stmt, regval, r1 = loadc(stmt, regval, lhs)
+                stmt, regval, r2 = loadc(stmt, regval, rhs)
                 cmp = "CMP R"+str(r1)+", "+"R"+str(r2)
                 print("ARM STATEMENT: ", cmp)
                 time.sleep(0.02)
                 stmt.append(cmp)
-                stmt = findoperation(stmt, op, label)
+                stmt = find(stmt, op, label)
                 
             elif(lhs.isdigit()):
-                stmt, regval, r1 = loadconstant(stmt, regval, lhs)
-                stmt, regval, r2, r3 = loadvariable(stmt, regval, rhs)
+                stmt, regval, r1 = loadc(stmt, regval, lhs)
+                stmt, regval, r2, r3 = loadv(stmt, regval, rhs)
                 
                 st4 = "CMP " + "R"+str(r1) + "," + "R" + str(r3)
                 print("ARM STATEMENT: ", st4)
                 time.sleep(0.02)
                 stmt.append(st4)
-                stmt = findoperation(stmt, op, label)
-                
+                stmt = find(stmt, op, label)
             elif(rhs.isdigit()):
-                stmt, regval, r1, r2 = loadvariable(stmt, regval, lhs)
-                stmt, regval, r3 = loadconstant(stmt, regval, rhs)
+                stmt, regval, r1, r2 = loadv(stmt, regval, lhs)
+                stmt, regval, r3 = loadc(stmt, regval, rhs)
                 st4 = "CMP " + "R"+str(r2) + "," + "R" + str(r3)
                 print("ARM STATEMENT: ", st4)
                 time.sleep(0.02)
                 stmt.append(st4)
-                stmt = findoperation(stmt, op, label)
-                
+                stmt = find(stmt, op, label)
             else:
-                stmt, regval, r1, r2 = loadvariable(stmt, regval, lhs)
-                stmt, regval, r3, r4 = loadvariable(stmt, regval, rhs)
+                stmt, regval, r1, r2 = loadv(stmt, regval, lhs)
+                stmt, regval, r3, r4 = loadv(stmt, regval, rhs)
+                
                 st4 = "CMP " + "R"+str(r2) + "," + "R" + str(r4)
                 print("ARM STATEMENT: ", st4)
                 time.sleep(0.02)
                 stmt.append(st4)
-                stmt = findoperation(stmt, op, label)
+                stmt = find(stmt, op, label)
                     
                 
             
@@ -228,7 +225,6 @@ def genAssembly(lines, file):
             variable = i.split(' ')[0]
             value = i.split(' ')[2]
             variable = str(variable)
-            
             if variable not in varlist:
                 out = ""
                 out = out + variable + ":" + " .WORD " + str(value)
@@ -236,10 +232,9 @@ def genAssembly(lines, file):
                 time.sleep(0.02)
                 vardec.append(out)
                 varlist.append(variable)
-                
             else:
-                stmt, regval, r1, r2 = loadvariable(stmt, regval, variable)
-                stmt, regval, r3 = loadconstant(stmt, regval, value)
+                stmt, regval, r1, r2 = loadv(stmt, regval, variable)
+                stmt, regval, r3 = loadc(stmt, regval, value)
                 st = "STR R"+str(r3)+", [R" + str(r1) + "]"
                 print("ARM STATEMENT: ", st)
                 time.sleep(0.02)
@@ -248,7 +243,7 @@ def genAssembly(lines, file):
                 
                 
             
-def writeassembly(stmt, vardec, File):
+def wassembly(stmt, vardec, File):
     File.write(".text\n")
     for i in stmt:
         time.sleep(0.001)
@@ -256,26 +251,25 @@ def writeassembly(stmt, vardec, File):
     File.write("SWI 0x011\n")
     File.write(".DATA\n")
     for i in vardec:
-        
         time.sleep(0.01)
-        File.write("%s\n"%(i))
-    
+        File.write("%s\n"%(i))    
     print("Written to File")
 
 fin = open("Output/icg.txt", "r")
-fout = open("assembly.s", "w")
+fout = open("Assembly.s", "w")
 
 lines = fin.readlines()
-#print("Generating Assembly ... ")
-vardec, stmt = genAssembly(lines, fout)
-#print("Assembly Code Generated")
-#print("Writing to File")
-#print("---------------")
-writeassembly(stmt, vardec, fout)
-#print("---------------")
-#print("Compilation Succesful")
+print("Generating Assembly ... ")
+vardec, stmt = generate(lines, fout)
+print("Assembly Code Generated")
+print("Writing to File")
+print("---------------")
+wassembly(stmt, vardec, fout)
+print("---------------")
+print("Compilation Succesful")
 fin.close()
 fout.close()
+
 
 fin.close()
 fout.close()
